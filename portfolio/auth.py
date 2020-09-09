@@ -51,6 +51,7 @@ def register():
     # When the user initially navigates to auth/register, or there was a validation error, an HTML page with the registration form should be shown.
     return render_template('auth/register.html')
 
+
 @app.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
@@ -68,7 +69,7 @@ def login():
         # check_password_hash() hashes the submitted password in the same way as the stored hash and securely compares them. If they match, the password is valid.
         elif not check_password_hash(user['password'], password):
             error = 'Incorrect password.'
-        
+
         # session is a dict that stores data across requests.
         if error is None:
             session.clear()
@@ -78,10 +79,12 @@ def login():
             return redirect(url_for('index'))
 
         flash(error)
-    
+
     return render_template('auth/login.html')
 
 # bp.before_app_request() registers a function that runs before the view function, no matter what URL is requested
+
+
 @bp.before_app_request
 # checks if a user id is stored in the session and gets that user’s data from the database, storing it on g.user, which lasts for the length of the request.
 def load_logged_in_user():
@@ -95,8 +98,25 @@ def load_logged_in_user():
             'SELECT * FROM user WHERE id = ?', (user_id,)
         ).fetchone()
 
+
 @bp.route('/logout')
 def logout():
     # Remove the user id from the session.
     session.clear()
     return redirect(url_for('index'))
+
+# Creating, editing, and deleting blog posts will require a user to be logged in. A decorator can be used to check this for each view it’s applied to.
+
+
+def login_required(view):
+    # Decorator returns a new view function that wraps the original view it’s applied to.
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        # Checks if a user is loaded and redirects to the login page otherwise.
+        if g.user is None:
+            return redirect(url_for('auth.lofin'))
+
+        # If a user is loaded the original view is called and continues normally
+        return view(**kwargs)
+
+    return wrapped_view
