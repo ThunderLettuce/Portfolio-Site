@@ -34,7 +34,7 @@ def init_db():
     db = get_db()
 
     # Opens a file relitive to the `portfolio` package. Returns a database connection, which is used to execute the commands read from the file
-    with current_app.open_instance_resource('schima.sql') as f:
+    with current_app.open_instance_resource('schema.sql') as f:
         db.executescript(f.read().decode('utf8'))
 
 

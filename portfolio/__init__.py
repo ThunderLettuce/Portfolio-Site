@@ -31,3 +31,9 @@ def create_app(test_config=None):
     db.init_app(app)
 
     return app
+
+    # To run app:
+    # $ source flask_portfolio_venv/bin/activate
+    # $ export FLASK_APP=portfolio
+    # $ export FLASK_APP=development
+    # $ flask run
