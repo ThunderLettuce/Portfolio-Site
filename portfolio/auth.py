@@ -120,3 +120,6 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+# When using a blueprint, the name of the blueprint is prepended to the name of the function,
+# so the endpoint for the login function you wrote above is 'auth.login' because you added it to the 'auth' blueprint.
