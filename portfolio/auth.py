@@ -27,10 +27,10 @@ def register():
             error = 'Password is required.'
         # Validate that username is not already registered by querying the database and checking if a result is returned.
         elif db.execute(
-            'Select id FROM user WHERE username = ?', (username,)
+            'SELECT id FROM user WHERE username = ?', (username,)
             # fetchone() returns one row from the query.
         ).fetchone() is not None:
-        error = f'User {username} is already registered'
+            error = f'User {username} is already registered'
 
         if error is None:
             # If validation succeeds, insert the new user data into the database.
@@ -42,7 +42,7 @@ def register():
             # Since this query modifies data, db.commit() needs to be called afterwards to save the changes.
             db.commit()
             # After storing the user, they are redirected to the login page.
-            return redirect(url_for(auth.login))
+            return redirect(url_for('auth.login'))
 
         # If validation fails, the error is shown to the user.
         # flash() stores messages that can be retrieved when rendering the template.
@@ -52,7 +52,7 @@ def register():
     return render_template('auth/register.html')
 
 
-@app.route('/login', methods=('GET', 'POST'))
+@bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
         username = request.form['username']
