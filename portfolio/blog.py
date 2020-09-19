@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, g, redirect, render_template, request, url_for
 from werkzeug.exceptions import abort
-from flaskr.auth import login_required
-from flaskr.db import get_db
+from portfolio.auth import login_required
+from portfolio.db import get_db
 
 # Creates a Blueprint named 'auth'. Like the application object, the blueprint needs to know where it’s defined, so __name__ is passed as the second argument.
 # The url_prefix will be prepended to all the URLs associated with the blueprint.
@@ -52,6 +52,8 @@ def create():
     return render_template('blog/create.html')
 
 # The check_author argument is defined so that the function can be used to get a post without checking the author.
+
+
 def get_post(id, check_author=True):
     post = get_db().execute(
         'SELECT p.id, title, body, created, author_id, username'
@@ -71,7 +73,7 @@ def get_post(id, check_author=True):
 
 # The update function takes an argument, id.
 # That corresponds to the <int:id> in the route.
-# A real URL will look like /1/update. Flask will capture the 1, ensure it’s an int, and pass it as the id argument. 
+# A real URL will look like /1/update. Flask will capture the 1, ensure it’s an int, and pass it as the id argument.
 # To generate a URL to the update page, url_for() needs to be passed the id so it knows what to fill in: url_for('blog.update', id=post['id']).
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
 @login_required
