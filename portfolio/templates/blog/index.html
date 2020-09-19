@@ -26,3 +26,8 @@
 {% endif %}
 {% endfor %}
 {% endblock %}
+
+<!-- When a user is logged in, the header block adds a link to the create view. 
+    When the user is the author of a post, they’ll see an “Edit” link to the update view for that post. 
+    loop.last is a special variable available inside Jinja for loops. 
+    It’s used to display a line after each post except the last one, to visually separate them. -->
