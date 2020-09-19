@@ -46,7 +46,7 @@ def create():
                 ' VALUES (?, ?, ?)',
                 (title, body, g.user['id'])
             )
-            bd.commit()
+            db.commit()
             return redirect(url_for('blog.index'))
 
     return render_template('blog/create.html')
@@ -105,11 +105,11 @@ def update(id):
 
 # The delete view doesn’t have its own template, the delete button is part of update.html and posts to the /<id>/delete URL.
 # Since there is no template, it will only handle the POST method and then redirect to the index view.
-@bp.route('/<int:id>/delete', methods('POST',))
+@bp.route('/<int:id>/delete', methods=('POST',))
 @login_required
 def delete(id):
     get_post(id)
     db = get_db()
     db.execute('DELETE FROM post WHERE id = ?', (id,))
     db.commit()
-    return redirect(url_for('blog/index'))
+    return redirect(url_for('blog.index'))
